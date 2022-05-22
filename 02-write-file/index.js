@@ -20,6 +20,6 @@ rl.on('line', (input) => {
 });
 
 rl.on('SIGINT', () => {
-    console.log('Спасибо! Можете проверить файл text.txt!');
+    console.log('\nСпасибо! Можете проверить файл text.txt!');
     rl.close();
 });
