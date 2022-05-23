@@ -5,12 +5,10 @@ const path = require('path');
 function del() {
     fs.readdir(path.join(__dirname, './files'), (err, files) => {
         files.forEach(file => {
-            fs.unlink(path.join(__filename, `./files-copy/${file}`), err => {
+            fs.unlink(path.join(__dirname, `./files-copy/${file}`), err => {
                 if(err) throw err;
                 console.log(file + ' успешно удален');
             });
-
-            
         })
     }
 
@@ -31,24 +29,23 @@ function del() {
     // ]
 
 function add() {
-    fs.mkdir('files-copy', err => {
+    fs.mkdir(path.join(__dirname, './files-copy'), err => {
         if(err) throw err;
     });
 }
 
 function addTwo() {
-    fs.open('files-copy', err => {
+    fs.open(path.join(__dirname, './files-copy'), err => {
         if(err) throw err;
     });
 }
-// addTwo();
 
-fs.access('files-copy', function(error){
+fs.access(path.join(__dirname, './files-copy'), function(error){
     if (error) {
         add();
     } else {
-        // addTwo();
         del();
+        addTwo();
     }
 });
 
