@@ -6,22 +6,36 @@ const rl = require('readline').createInterface({
     output: process.stdout
 });
 
-fs.open(path.join(__dirname, 'text.txt'), 'a', () => {
-    console.log('Введите текст пожалуйста:');
-});
-
-rl.on('line', (input) => {
-    if (input === 'exit') {
-        console.log('Спасибо! Можете проверить файл text.txt!');
-        rl.close();
+fs.access(path.join(__dirname, './text.txt'), function(error){
+    if (error) {
+        add();
     } else {
-        fs.appendFile(path.join(__dirname, 'text.txt'), `${input} \n`, (err) => {
+        fs.unlink(path.join(__dirname, './text.txt'), err => {
             if(err) throw err;
         });
+        add();
     }
 });
 
-rl.on('SIGINT', () => {
-    console.log('\nСпасибо! Можете проверить файл text.txt!');
-    rl.close();
-});
+
+function add() {
+    fs.open(path.join(__dirname, 'text.txt'), 'a', () => {
+        console.log('Введите текст пожалуйста:');
+    });
+    
+    rl.on('line', (input) => {
+        if (input === 'exit') {
+            console.log('Спасибо! Можете проверить файл text.txt!');
+            rl.close();
+        } else {
+            fs.appendFile(path.join(__dirname, 'text.txt'), `${input} \n`, (err) => {
+                if(err) throw err;
+            });
+        }
+    });
+    
+    rl.on('SIGINT', () => {
+        console.log('\nСпасибо! Можете проверить файл text.txt!');
+        rl.close();
+    });
+}
